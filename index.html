@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Progress Grid</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f0f0f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 40px 20px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+#counter {
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(31, 12px);
+  gap: 6px;
+  max-width: 700px;
+}
+
+.cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: #2a2a2a;
+  transition: 0.3s;
+}
+
+.filled {
+  background: #00ff88;
+}
+</style>
+</head>
+<body>
+
+<h1 id="title"></h1>
+<div id="counter"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+const year = 2026;
+const today = new Date();
+const start = new Date(year, 0, 1);
+const end = new Date(year, 11, 31);
+
+const totalDays = Math.floor((end - start) / (1000*60*60*24)) + 1;
+
+let passedDays = 0;
+if (today.getFullYear() === year) {
+  passedDays = Math.floor((today - start) / (1000*60*60*24)) + 1;
+} else if (today.getFullYear() > year) {
+  passedDays = totalDays;
+}
+
+const remainingDays = totalDays - passedDays;
+
+document.getElementById("title").innerText =
+  year + " remainingDays " + remainingDays + " Day";
+
+document.getElementById("counter").innerText =
+  "passedDays" + passedDays + " / " + totalDays + " Day";
+
+const grid = document.getElementById("grid");
+
+for (let i = 0; i < totalDays; i++) {
+  const cell = document.createElement("div");
+  cell.classList.add("cell");
+  if (i < passedDays) {
+    cell.classList.add("filled");
+  }
+  grid.appendChild(cell);
+}
+</script>
+
+</body>
+</html>
